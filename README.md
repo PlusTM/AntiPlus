@@ -8,12 +8,12 @@
 
 ` git clone https://github.com/eternnoir/pyTelegramBotAPI.git`
 
-cd pyTelegramBotAPI
+`cd pyTelegramBotAPI`
 
-python setup.py install
+`python setup.py install`
 
-cd ..
-screen python AntiPlus.py
+`cd ..`
+`screen python AntiPlus.py`
 
 
 [MrNitro](https://t.me/NitroPlus) && [ForReport](https://t.me/PVSefareshatBoT)
