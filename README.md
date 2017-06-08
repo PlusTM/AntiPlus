@@ -14,6 +14,8 @@
 
 `cd ..`
 
+`git clone https://github.com/PlusTM/AntiPlus`
+
 `screen python AntiPlus.py`
 
 
