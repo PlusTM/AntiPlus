@@ -63,6 +63,9 @@
 ### Create Love Sticker
 > [/]love [Text1] [Text2]
 
+### Create LoGo
+> [/]logo [Num(100-144)] [Text]
+
 ### Show Your Rank
 > [/]me
 
