@@ -206,7 +206,7 @@ def add(msg):
 	if database.sismember("owners"+str(msg.chat.id), msg.from_user.id):
 		bot.reply_to(msg, "👤You Are Group Owner".format())
 	else:
-		if msg.from_user.id == 264150062: #Enter Sudo ID
+		if msg.from_user.id in sudos:
 			bot.reply_to(msg, "👤You Are My Sudo XD".format())
 		else:
 			if database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
@@ -218,7 +218,7 @@ def add(msg):
 
 @bot.message_handler(commands=['panel'])
 def add(msg):
-	if msg.from_user.id == 264150062 or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
+	if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
 		stats = database.scard('msg')
 		groupss = database.scard('groups')
 		ownersgp = database.scard('owners'+str(msg.chat.id))
@@ -252,7 +252,7 @@ def add(msg):
 
 @bot.message_handler(commands=['promote'])
 def add(msg):
-	if msg.from_user.id == 264150062 or database.sismember("owners"+str(msg.chat.id), msg.from_user.id):
+	if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id):
 		if msg.reply_to_message:
 			if database.sismember("promote"+str(msg.chat.id), msg.reply_to_message.from_user.id):
 				bot.reply_to(msg, "👤ID > [ {} ] Already Added To Promote List".format(msg.reply_to_message.from_user.id))
@@ -273,7 +273,7 @@ def add(msg):
 
 @bot.message_handler(commands=['demote'])
 def add(msg):
-	if msg.from_user.id == 264150062 or database.sismember("owners"+str(msg.chat.id), msg.from_user.id):
+	if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id):
 		if msg.reply_to_message:
 			database.srem("promote"+str(msg.chat.id), msg.reply_to_message.from_user.id)
 			bot.reply_to(msg, "👤ID > [ {} ] Removed The Promote List".format(msg.reply_to_message.from_user.id))
@@ -307,7 +307,7 @@ def add(msg):
 
 @bot.message_handler(commands=['kick'])
 def kick(msg):
-	if msg.from_user.id:
+	if msg.from_user.id in sudos:
 		try:
 			id = msg.chat.id
 			bot.kick_chat_member(msg.chat.id, msg.reply_to_message.from_user.id)
@@ -331,18 +331,19 @@ def kick(msg):
 
 @bot.message_handler(commands=['setwlc'])
 def setwlc(msg):
-	ids = msg.chat.id
-	database.delete("gpwlc","{}".format(ids))
-	owners = database.sismember('owners'+str(ids), '{}'.format(msg.from_user.id))
-	if str(owners) == 'True':
-		database.hset("gpwlc","{}".format(ids),msg.text.replace('/setwlc ',''))
-		bot.reply_to(msg, "👥Group Welcome Seted!".format())
+	if msg.from_user.id in sudos:
+		ids = msg.chat.id
+		database.delete("gpwlc","{}".format(ids))
+		owners = database.sismember('owners'+str(ids), '{}'.format(msg.from_user.id))
+		if str(owners) == 'True':
+			database.hset("gpwlc","{}".format(ids),msg.text.replace('/setwlc ',''))
+			bot.reply_to(msg, "👥Group Welcome Seted!".format())
 
 ######################################################################################
 			
 @bot.message_handler(commands=['del'])
 def delete(msg):
-	if msg.from_user.id == 264150062 or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
+	if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
 		if msg.reply_to_message:
 			delmessage(token, msg.chat.id, msg.reply_to_message.message_id)
 			delmessage(token, msg.chat.id, msg.message_id)
@@ -371,7 +372,7 @@ def welcome(msg):
 @bot.message_handler(commands=['settings'])
 def locks(msg):
 	if database.sismember("groups", msg.chat.id):
-		if msg.from_user.id == 264150062 or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
+		if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
 			try:
 				if database.get(msg.from_user.id):
 					bot.reply_to(msg, "Please Wait For {} Sec".format(database.ttl(msg.from_user.id)))
@@ -385,7 +386,7 @@ def locks(msg):
 
 @bot.message_handler(commands=['create'])
 def create(msg):
-	if msg.from_user.id == 264150062 or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
+	if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
 		try:
 			if msg.from_user.id:
 				text2 = msg.text.split()[2]
@@ -402,7 +403,7 @@ def create(msg):
 
 @bot.message_handler(commands=['echo'])
 def echo(msg):
-    if msg.from_user.id == 264150062 or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
+    if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
 		try:
 			if database.get(msg.from_user.id):
 				text = msg.text.replace('/echo ','')
@@ -415,11 +416,31 @@ def echo(msg):
 			bot.reply_to(msg, "{}".format(text,database))
 			database.setex(msg.from_user.id, 60, True)
 
+######################################################################################
+
+@bot.message_handler(commands=['logo'])
+def logo(msg):
+	try:
+		text1 = msg.text.split()[1]
+		text2 = msg.text.split()[2]
+		bot.reply_to(msg, "Please Wait...")
+		res1 = "http://logo.irapi.ir/create/{}/{}".format(text1,text2)
+		opener = urllib2.build_opener()
+		f = opener.open(res1)
+		parsed_json = json.loads(f.read())
+		logos = parsed_json["url"]
+		urllib.urlretrieve("http://{}".format(logos), "logo.png")
+		bot.send_sticker(msg.chat.id, open('logo.png'))
+		bot.send_photo(msg.chat.id, open('logo.png'), caption="Your LoGo\n@PlusTM")
+		os.remove('logo.png')
+	except:
+		bot.reply_to(msg, "Error!\nYou Can Send 100 To 144")
+	
 ######################################################################################	
 
 @bot.message_handler(commands=['filter'])
 def filter(msg):
-    if msg.from_user.id == 264150062 or database.sismember("owners"+str(msg.chat.id), msg.from_user.id):
+    if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id):
 		text = msg.text.replace('/filter ','')
 		filters = database.sadd("filters"+str(msg.chat.id), text)
 		bot.reply_to(msg, "{} Added To Filter List".format(text))
@@ -428,7 +449,7 @@ def filter(msg):
 
 @bot.message_handler(commands=['unfilter'])
 def unfilter(msg):
-    if msg.from_user.id == 264150062 or database.sismember("owners"+str(msg.chat.id), msg.from_user.id):
+    if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id):
 		try:
 			text = msg.text.replace('/unfilter ','')
 			filters = database.srem("filters"+str(msg.chat.id), text)
@@ -440,7 +461,7 @@ def unfilter(msg):
 
 @bot.message_handler(commands=['filterlist'])
 def filterlist(msg):
-	if msg.from_user.id == 264150062 or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
+	if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
 		try:
 			i = 0
 			for id in database.smembers("filters"+str(msg.chat.id)):
@@ -733,5 +754,7 @@ def delete(msg):
 
 ######################################################################################
 # BoT Writed By Mr.Nitro(@NitroPlus) & @PlusTM
-# Thanks To : 1 : @AlphaCyber 2 : @MosyDev 3 : @AnonyDev
+# Thanks To : 1 : @AlphaCyber 2 : @MosyDev 
+
+#  Version > (2.0)  #
 bot.polling(True)
