@@ -438,6 +438,57 @@ def logo(msg):
 	
 ######################################################################################	
 
+@bot.message_handler(commands=['tarikh'])
+def tarikh(msg):
+	try:
+		text1 = msg.text.split()[1]
+		res1 = "https://api.feelthecode.xyz/convertdate/?date={}".format(text1)
+		opener = urllib2.build_opener()
+		f = opener.open(res1)
+		parsed_json = json.loads(f.read())
+		tarikh = parsed_json["jalali_date"]
+		bot.reply_to(msg, "{}".format(tarikh))
+	except:
+		print("Error!")
+
+######################################################################################
+
+@bot.message_handler(commands=['date'])
+def date(msg):
+	try:
+		urllib.urlretrieve("https://api.feelthecode.xyz/sticker/date/".format(), "date.png")
+		bot.send_sticker(msg.chat.id, open('date.png'))
+		os.remove('date.png')
+	except:
+		print("Error!")
+		
+######################################################################################
+
+@bot.message_handler(commands=['insta'])
+def instagram(msg):
+	try:
+		text1 = msg.text.split()[1]
+		res1 = "https://instagram.com/{}/?__a=1".format(text1)
+		opener = urllib2.build_opener()
+		f = opener.open(res1)
+		parsed_json = json.loads(f.read())
+		bio = (parsed_json["user"]["biography"] or '*****')
+		followers = parsed_json["user"]["followed_by"]["count"]
+		following = (parsed_json["user"]["follows"]["count"] or '*****')
+		name = (parsed_json["user"]["full_name"] or '*****')
+		id = (parsed_json["user"]["id"] or '*****')
+		is_private = parsed_json["user"]["is_private"]
+		pic_url = parsed_json["user"]["profile_pic_url_hd"]
+		username = (parsed_json["user"]["username"] or '*****')
+		fb = (parsed_json["user"]["connected_fb_page"] or '*****')
+		urllib.urlretrieve("{}".format(pic_url), "pic.png")
+		bot.send_photo(msg.chat.id, open('pic.png'), caption="Biografi > {}\nFollowers > {}\nFollowing > {}\nName > {}\nID > {}\nUserName > {}\nFaceBooK > {}".format(bio, followers, following, name, id, username, fb))
+		os.remove('pic.png')
+	except:
+		print("Error!")
+		
+######################################################################################
+		
 @bot.message_handler(commands=['filter'])
 def filter(msg):
     if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id):
@@ -756,5 +807,5 @@ def delete(msg):
 # BoT Writed By Mr.Nitro(@NitroPlus) & @PlusTM
 # Thanks To : 1 : @AlphaCyber 2 : @MosyDev 
 
-#  Version > (2.0)  #
+#  Version > (2.5)  #
 bot.polling(True)
