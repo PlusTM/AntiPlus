@@ -25,6 +25,7 @@ token = 'UToken' #Token
 bot = telebot.TeleBot(token)
 database = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
 sudos = [198794027,264150062] #Sudo IDs
+channels = -1001054519880
 db = "https://api.telegram.org/bot{}/getMe?".format(token)
 res = urllib.urlopen(db)
 res_body = res.read()
@@ -140,6 +141,19 @@ def setting2(gpslock2):
 
 ######################################################################################
 
+@bot.message_handler(commands=['start'])
+def start(message):
+	s = bot.get_chat_member(channels, message.chat.id)
+	if s.status == "member" or s.status == "creator" or s.status == "administrator":
+		id = message.chat.id
+		user = message.from_user.username
+		database.sadd('startbot',id)
+		bot.send_message(message.chat.id, '*AntiPlusBoT Started!*', parse_mode="Markdown")
+	else:
+		bot.send_message(message.chat.id, "`برای استفاده از ربات باید در کانال ما جوین شوید`\n`ایدی کانال :` @PlusTM", reply_markup=channel, parse_mode="Markdown")
+
+######################################################################################
+		
 @bot.message_handler(commands=['add'])
 def adde(msg):
 	if msg.from_user.id in sudos:
@@ -221,32 +235,17 @@ def add(msg):
 	if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
 		stats = database.scard('msg')
 		groupss = database.scard('groups')
+		members = database.scard('startbot')
 		ownersgp = database.scard('owners'+str(msg.chat.id))
 		promotes = database.scard('promote'+str(msg.chat.id))
 		channel = types.InlineKeyboardMarkup()
 		#channel.add(types.InlineKeyboardButton('Msgs > {}'.format(stats), callback_data='msgss'))
+		channel.add(types.InlineKeyboardButton('Members > {}'.format(members), callback_data='botmembers'))
 		channel.add(types.InlineKeyboardButton('Owners > {}'.format(ownersgp), callback_data='ownerss'))
 		channel.add(types.InlineKeyboardButton('Promote > {}'.format(promotes), callback_data='promotess'))
 		channel.add(types.InlineKeyboardButton('Groups > {}'.format(groupss), callback_data='gps'))
 		channel.add(types.InlineKeyboardButton('🌐Channel🌐', url='https://telegram.me/PlusTM'))
 		bot.reply_to(msg, "👥Group Stats >".format(stats,groupss), reply_markup=channel)
-
-######################################################################################
-
-#@bot.message_handler(commands=['resmsgs'])
-#def add(msg):
-#	if msg.from_user.id in sudos:
-#		msgs = msg.message_id
-#		database.srem('msgs', msg.chat.id)
-#		bot.reply_to(msg, "All Message Reseted NoW".format())
-
-######################################################################################
-
-#@bot.message_handler(commands=['resgps'])
-#def add(msg):
-#	if msg.from_user.id in sudos:
-#		database.srem('groups', msg.chat.id)
-#		bot.reply_to(msg, "All Groups Reseted NoW".format())
 
 ######################################################################################
 
@@ -795,14 +794,6 @@ def delete(msg):
 		if re.match("(.*)", msg.text):
 			delmessage(token, msg.chat.id, msg.message_id)
 		
-		
-######################################################################################
-		
-#@bot.message_handler(content_types=["text"])
-#def msgs(msg):
- # msgs = msg.message_id
-#  database.sadd('msg', msgs)
-
 ######################################################################################
 # BoT Writed By Mr.Nitro(@NitroPlus) & @PlusTM
 # Thanks To : 1 : @AlphaCyber 2 : @MosyDev 
