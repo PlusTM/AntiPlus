@@ -84,6 +84,15 @@
 ### Echo
 > [/]echo [TEXT]
 
+### Change Date
+> [/]tarikh [Year/month/day]
+
+### Show Date
+> [/]date
+
+### Show Instagram Account
+> [/]insta [UserNameAccount]
+
 [MrNitro](https://t.me/NitroPlus) && [ForReport](https://t.me/PVSefareshatBoT)
 
 Thanks To :
