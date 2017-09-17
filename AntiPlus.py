@@ -21,7 +21,7 @@ from telebot import types
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
-token = '384180412:AAEuTGiNfdOyzcj-mtKBZshxB2uGX2GRI0s' #Token 
+token = '' #Token 
 bot = telebot.TeleBot(token)
 database = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
 sudos = [198794027,264150062] #Sudo IDs
