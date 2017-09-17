@@ -93,6 +93,9 @@
 ### Show Instagram Account
 > [/]insta [UserNameAccount]
 
+### Show Help List
+> [/]help
+
 [MrNitro](https://t.me/HajiNitro) && [ForReport](https://t.me/PVSefareshatBoT)
 
 Thanks To :
