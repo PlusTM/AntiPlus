@@ -632,14 +632,13 @@ def unfilter(msg):
 @bot.message_handler(commands=['filterlist'])
 def filterlist(msg):
 	if msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
-		try:
-			i = 0
-			for id in database.smembers("filters"):
-				message = "{} - {}".format(i,id)
-				i = i + 1
-			bot.reply_to(msg, "Filter List >\n{}".format(message))
-		except:
-			bot.reply_to(msg, "Filter List Is Empty".format())
+		i = 1
+		words = database.smembers("filters")
+		pm = "لیست کلمات فیلتر شده :\n\n"
+		for word in words:
+			pm = "{}{}- {}\n".format(pm,i,word)
+			i = i + 1
+		bot.reply_to(msg, "{}".format(pm))
 
 ######################################################################################
 		
@@ -1027,7 +1026,7 @@ def delete(msg):
 		
 	if not msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
 		if database.get("link"+str(msg.chat.id)):
-			if re.match("https://telegram.me/(.*)", msg.text) or re.match("https://t.me/(.*)", msg.text) or re.match("telegram.me/(.*)", msg.text) or re.match("t.me/(.*)", msg.text):
+			if re.findall("(https://telegram.me/\w.+)", msg.text) or re.findall("(https://t.me/\w.+)", msg.text) or re.findall("(t.me/\w.+)", msg.text) or re.findall("(telegram.me/\w.+)", msg.text):
 				delmessage(token, msg.chat.id, msg.message_id)
 			
 	if not msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
@@ -1044,17 +1043,20 @@ def delete(msg):
 			
 	if not msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
 		if database.get("tag"+str(msg.chat.id)):
-			if re.match("#(.*)", msg.text) or re.match("(.*)#", msg.text):
+			if re.findall("#(\w+)", msg.text):
 				delmessage(token, msg.chat.id, msg.message_id)
 			
 	if not msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
 		if database.get("username"+str(msg.chat.id)):
-			if re.match("@(.*)", msg.text) or re.match("(.*)@", msg.text):
+			if re.findall("@(\w+)", msg.text):
 				delmessage(token, msg.chat.id, msg.message_id)
 			
 	if not msg.from_user.id in sudos or database.sismember("owners"+str(msg.chat.id), msg.from_user.id) or database.sismember("promote"+str(msg.chat.id), msg.from_user.id):
-		if msg.text in database.smembers("filters"):
-			delmessage(token, msg.chat.id, msg.message_id)
+		filters = database.smembers("filters")
+		
+		for i in filters:
+			if re.findall("({}.*)".format(i), msg.text, re.M|re.DOTALL):
+				delmessage(token, msg.chat.id, msg.message_id)
 		
 		
 ######################################################################################
@@ -1066,7 +1068,7 @@ def delete(msg):
 
 ######################################################################################
 # BoT Writed By Mr.Nitro(@HajiNitro) & @PlusTM
-# Thanks To : 1 : @AlphaCyber 2 : @MosyDev 
+# Thanks To : 1 : @AlphaCyber 2 : @MosyDev  3: @Anony
 
 #  Version > (FINAL)  #
 bot.polling(True)
