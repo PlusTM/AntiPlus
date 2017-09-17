@@ -93,7 +93,7 @@
 ### Show Instagram Account
 > [/]insta [UserNameAccount]
 
-[MrNitro](https://t.me/NitroPlus) && [ForReport](https://t.me/PVSefareshatBoT)
+[MrNitro](https://t.me/HajiNitro) && [ForReport](https://t.me/PVSefareshatBoT)
 
 Thanks To :
 
