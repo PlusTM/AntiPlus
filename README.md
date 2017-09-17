@@ -1,4 +1,4 @@
-# AntiPlus `(Demo)`
+# AntiPlus `(FINAL)`
 
 **Open AntiPlus.py File And Set Your Token And Sudo ID**
 
