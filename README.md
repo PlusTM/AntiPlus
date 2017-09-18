@@ -1,24 +1,16 @@
 # AntiPlus `(FINAL)`
 
-**Open AntiPlus.py File And Set Your Token And Sudo ID**
-
-`sudo apt-get install python-pip`
-
-`pip install pyTelegramBotAPI`
-
-` git clone https://github.com/eternnoir/pyTelegramBotAPI.git`
-
-`cd pyTelegramBotAPI`
-
-`python setup.py install`
-
-`cd ..`
-
 `git clone https://github.com/PlusTM/AntiPlus`
 
 `cd AntiPlus`
 
-`screen python AntiPlus.py`
+`chmod +x Setup.sh`
+
+`./Setup.sh`
+
+**Open AntiPlus.py File And Set Your Token And Sudo ID**
+
+`screen ./Anti.sh`
 
 # **Help**
 
