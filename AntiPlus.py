@@ -25,7 +25,7 @@ token = '' #Token
 bot = telebot.TeleBot(token)
 database = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
 sudos = [198794027,264150062] #Sudo IDs
-channels = -1001054519880
+channels = -1001054519880 #Channel ID
 db = "https://api.telegram.org/bot{}/getMe?".format(token)
 res = urllib.urlopen(db)
 res_body = res.read()
@@ -174,16 +174,8 @@ def setting2(gpslock2):
 	
 @bot.message_handler(commands=['start'])
 def start(message):
-	s = bot.get_chat_member(channels, message.chat.id)
-	if s.status == "member" or s.status == "creator" or s.status == "administrator":
-		id = message.chat.id
-		user = message.from_user.username
-		database.sadd('startbot',id)
-		bot.send_message(message.chat.id, '*AntiPlusBoT Started*\n`You Can See My Commands`', reply_markup=commadns, parse_mode="Markdown")
-	else:
-		bot.send_message(message.chat.id, "`برای استفاده از ربات باید در کانال ما جوین شوید`\n`ایدی کانال :` @PlusTM", reply_markup=channel, parse_mode="Markdown")
-
-
+	bot.send_message(message.chat.id, '*AntiPlus Started*', reply_markup=commadns, parse_mode="Markdown")
+	
 ######################################################################################
 
 @bot.message_handler(commands=['help'])
@@ -245,11 +237,14 @@ def time(msg):
 
 @bot.message_handler(commands=['love'])
 def love(msg):
-	text1 = msg.text.split()[1]
-	text2 = msg.text.split()[2]
-	urllib.urlretrieve("http://www.iloveheartstudio.com/-/p.php?t={}%20%EE%BB%AE%20{}&bc=FFCBDB&tc=000000&hc=ff0000&f=c&uc=true&ts=true&ff=PNG&w=500&ps=sq".format(text1,text2), "love.png")
-	bot.send_sticker(msg.chat.id, open('love.png'))
-	os.remove('love.png')
+	try:
+		text1 = msg.text.split()[1]
+		text2 = msg.text.split()[2]
+		urllib.urlretrieve("http://www.iloveheartstudio.com/-/p.php?t={}%20%EE%BB%AE%20{}&bc=FFCBDB&tc=000000&hc=ff0000&f=c&uc=true&ts=true&ff=PNG&w=500&ps=sq".format(text1,text2), "love.png")
+		bot.send_sticker(msg.chat.id, open('love.png'))
+		os.remove('love.png')
+	except:
+		bot.reply_to(msg, "Error!\n/love Text1 Text2")
 
 ######################################################################################
 	
